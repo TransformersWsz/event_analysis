@@ -38,13 +38,12 @@ tf.train.init_from_checkpoint(init_checkpoint, assignment)
 encoder_sentence_layer = model.get_pooled_output()
 encoder_tokens_layer = model.all_encoder_layers
 
-
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     tokenizer = tokenization.FullTokenizer(vocab_file=bert_vocab_file)
-    trainx = readPkl(datarootpath+"train_X.pkl")
-    trainy = readPkl(datarootpath+"train_Y.pkl")
-    
+    trainx = readPkl(datarootpath + "train_X.pkl")
+    trainy = readPkl(datarootpath + "train_Y.pkl")
+
     # 取一个bach试试
     bach_size = 100
     btrainx = trainx[:bach_size]
@@ -57,14 +56,13 @@ with tf.Session() as sess:
     btrainx = bCut2Maxlen(btrainx)
 
     # 构造bert输入
-    word_ids, word_mask, word_segment_ids = bBuildBertInput(btrainx,tokenizer)
+    word_ids, word_mask, word_segment_ids = bBuildBertInput(btrainx, tokenizer)
     print(len(word_ids[0]), len(word_mask[0]), len(word_segment_ids[0]))
     fd = {input_ids: word_ids, input_mask: word_mask, segment_ids: word_segment_ids}
 
     tokens = sess.run([encoder_sentence_layer], feed_dict=fd)
 
-
-    tokens = np.array(tokens)   # token 原本是list，这里改成np.array是为了看它的shape
-    print("tokens'shape",tokens.shape)
-    print("总句子数：",len(tokens[0]))
-    print("第0个句子的表示长度和标签：",len(tokens[0][0]), labels[0])
+    tokens = np.array(tokens)  # token 原本是list，这里改成np.array是为了看它的shape
+    print("tokens'shape", tokens.shape)
+    print("总句子数：", len(tokens[0]))
+    print("第0个句子的表示长度和标签：", len(tokens[0][0]), labels[0])
