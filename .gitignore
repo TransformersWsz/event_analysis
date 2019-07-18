@@ -114,3 +114,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Bert Model Checkpoint
+bert_model.ckpt.data-00000-of-00001
